@@ -1,0 +1,1 @@
+web: gunicorn Petit_Seminaire_Saint_Jean_Nkumba_E_Library.wsgi

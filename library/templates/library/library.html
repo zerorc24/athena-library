@@ -1,0 +1,115 @@
+{% extends 'library/base.html' %}
+
+{% block title %}Library Catalog | Athena Library{% endblock %}
+
+{% block content %}
+<section class="max-w-7xl mx-auto px-6 py-12">
+  <h2 class="text-3xl font-bold text-green-600 mb-8">Library Catalog</h2>
+
+  <form method="GET" action="{% url 'library' %}" class="flex gap-3 mb-8 max-w-2xl">
+    <input 
+      type="text" 
+      name="q" 
+      value="{{ query }}" 
+      placeholder="Search by title, author, category, or ISBN..." 
+      class="px-4 py-3 rounded-lg border w-full focus:outline-none focus:ring-2 focus:ring-green-600 bg-white"
+    >
+    <button type="submit" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-500 transition font-medium">Search</button>
+    {% if query %}
+      <a href="{% url 'library' %}" class="bg-gray-200 text-gray-700 px-4 py-3 rounded-lg hover:bg-gray-300 transition">Clear</a>
+    {% endif %}
+  </form>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+    {% for book in books %}
+      <div class="bg-white text-gray-800 p-6 rounded-xl shadow hover:shadow-lg transition flex flex-col justify-between">
+        <div>
+          <div class="h-40 bg-green-100 rounded-lg mb-4 flex items-center justify-center text-green-600 font-bold text-3xl">
+            {{ book.title|slice:":1" }}
+          </div>
+          
+          <h4 class="font-bold text-lg mb-1 line-clamp-2">{{ book.title }}</h4>
+          <p class="text-sm text-gray-600 mb-1">By <span class="font-medium text-gray-800">{{ book.author.full_name }}</span></p>
+          <span class="inline-block bg-green-50 text-green-700 text-xs px-2.5 py-1 rounded-full font-semibold mb-4">
+            {{ book.category.name }}
+          </span>
+        </div>
+
+        <div>
+          {% if book.pdf_url %}
+            <a href="{% url 'read_book' book.id %}" target="_blank" class="block text-center text-sm font-semibold text-green-600 hover:underline mb-3">
+              📖 Read Preview PDF
+            </a>
+          {% endif %}
+
+          {% if book.is_borrowed %}
+            <form method="POST" action="{% url 'return_book' book.id %}">
+              {% csrf_token %}
+              <button type="submit" class="w-full bg-gray-200 text-gray-800 py-2 rounded-lg font-medium hover:bg-gray-300 transition">
+                Return Book
+              </button>
+            </form>
+          {% else %}
+            <form method="POST" action="{% url 'borrow_book' book.id %}">
+              {% csrf_token %}
+              <button 
+                type="submit" 
+                {% if book.available_copies <= 0 %}disabled{% endif %} 
+                class="w-full py-2 rounded-lg font-medium transition {% if book.available_copies > 0 %}bg-green-600 text-white hover:bg-green-500{% else %}bg-gray-300 text-gray-500 cursor-not-allowed{% endif %}"
+              >
+                {% if book.available_copies > 0 %}Borrow{% else %}Out of Stock{% endif %}
+              </button>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+    {% empty %}
+      <div class="col-span-full text-center py-12">
+        <p class="text-gray-500 text-lg">No books found matching your search query.</p>
+      </div>
+    {% endfor %}
+  </div>
+
+  {% if books.has_other_pages %}
+    <div class="mt-12 flex justify-center items-center space-x-2">
+      
+      {% if books.has_previous %}
+        <a href="?page={{ books.previous_page_number }}{% if query %}&q={{ query }}{% endif %}" 
+           class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-green-50 hover:text-green-600 font-medium transition">
+          &laquo; Previous
+        </a>
+      {% else %}
+        <span class="px-4 py-2 bg-gray-100 border border-gray-200 rounded-lg text-gray-400 font-medium cursor-not-allowed">
+          &laquo; Previous
+        </span>
+      {% endif %}
+
+      {% for i in books.paginator.page_range %}
+        {% if books.number == i %}
+          <span class="px-4 py-2 bg-green-600 text-white font-bold rounded-lg shadow-sm">
+            {{ i }}
+          </span>
+        {% else %}
+          <a href="?page={{ i }}{% if query %}&q={{ query }}{% endif %}" 
+             class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-green-50 hover:text-green-600 font-medium transition">
+            {{ i }}
+          </a>
+        {% endif %}
+      {% endfor %}
+
+      {% if books.has_next %}
+        <a href="?page={{ books.next_page_number }}{% if query %}&q={{ query }}{% endif %}" 
+           class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-green-50 hover:text-green-600 font-medium transition">
+          Next &raquo;
+        </a>
+      {% else %}
+        <span class="px-4 py-2 bg-gray-100 border border-gray-200 rounded-lg text-gray-400 font-medium cursor-not-allowed">
+          Next &raquo;
+        </span>
+      {% endif %}
+
+    </div>
+  {% endif %}
+
+</section>
+{% endblock %}

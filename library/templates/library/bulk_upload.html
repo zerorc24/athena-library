@@ -1,0 +1,23 @@
+{% extends "library/base.html" %}
+{% block content %}
+
+<div class="max-w-xl mx-auto mt-12 bg-white p-6 rounded shadow">
+    <h2 class="text-xl font-bold mb-4">Bulk Upload Books (CSV)</h2>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <input type="file" name="csv_file" accept=".csv"
+               class="border p-2 w-full mb-4" required>
+
+        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            Upload
+        </button>
+    </form>
+
+    <p class="text-sm text-gray-500 mt-4">
+        CSV columns: title, pdf_url
+    </p>
+</div>
+
+{% endblock %}

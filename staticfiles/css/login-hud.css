@@ -1,0 +1,141 @@
+* {
+    box-sizing: border-box;
+    font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: radial-gradient(circle at top, #0f172a, #020617);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #e5e7eb;
+}
+
+/* Center container */
+.hud-container {
+    position: relative;
+}
+
+/* HUD Frame */
+.hud-frame {
+    width: 360px;
+    padding: 30px 26px;
+    position: relative;
+
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    border: 1px solid rgba(116, 118, 209, 0.5);
+    border-radius: 16px;
+
+    box-shadow:
+        0 0 25px rgba(34, 197, 94, 0.3),
+        inset 0 0 30px rgba(34, 197, 94, 0.15);
+}
+
+/* HUD corners */
+.hud-frame::before,
+.hud-frame::after {
+    content: "";
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border: 2px solid #5d5fcf;
+}
+
+.hud-frame::before {
+    top: -6px;
+    left: -6px;
+    border-right: none;
+    border-bottom: none;
+}
+
+.hud-frame::after {
+    bottom: -6px;
+    right: -6px;
+    border-left: none;
+    border-top: none;
+}
+
+/* Avatar circle */
+.avatar {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #525ce0, #166534);
+    box-shadow: 0 0 18px #9da3d8;
+}
+
+/* Inputs */
+.hud-frame input[type="text"],
+.hud-frame input[type="password"] {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 14px;
+
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(116, 102, 197, 0.6);
+
+    color: #e5e7eb;
+    outline: none;
+}
+
+.hud-frame input::placeholder {
+    color: #94a3b8;
+}
+
+/* Options */
+.options {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    margin-bottom: 16px;
+}
+
+.options a {
+    color: #6866ce;
+    text-decoration: none;
+}
+
+/* Button */
+button {
+    width: 100%;
+    padding: 10px;
+    background: transparent;
+    border: 1px solid #5d5ebb;
+    color: #517cce;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    letter-spacing: 1px;
+
+    box-shadow: inset 0 0 12px rgba(34, 197, 94, 0.4);
+}
+
+button:hover {
+    background: #8586ce;
+    color: #020617;
+}
+ul {
+    padding: 0;
+    list-style: none;
+}
+
+li {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+li img {
+    width: 100px;
+    height: auto;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
