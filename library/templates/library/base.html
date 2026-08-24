@@ -4,49 +4,46 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}Athena Library{% endblock %}</title>
-  
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- Three.js CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   {% block extra_head %}{% endblock %}
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col antialiased selection:bg-green-500 selection:text-slate-950">
+<body class="bg-gray-50 text-gray-900 font-sans min-h-screen flex flex-col antialiased">
 
   <!-- Navigation Bar -->
-  <nav class="sticky top-0 z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-800">
+  <nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
         
         <!-- Brand Logo -->
-        <a href="{% url 'home' %}" class="flex items-center space-x-3 group">
-          <div class="w-9 h-9 bg-green-500 rounded-xl flex items-center justify-center font-black text-slate-950 shadow-lg shadow-green-500/20 group-hover:scale-105 transition-transform duration-200">
+        <a href="{% url 'home' %}" class="flex items-center space-x-3">
+          <div class="w-9 h-9 bg-green-600 rounded-lg flex items-center justify-center font-bold text-white text-lg shadow-sm">
             A
           </div>
-          <span class="text-xl font-bold tracking-tight text-white group-hover:text-green-400 transition-colors duration-200">
-            Athena <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-800 border border-slate-700 text-green-400">3D</span>
+          <span class="text-xl font-bold tracking-tight text-gray-900">
+            Athena <span class="text-sm font-normal text-gray-500">Library</span>
           </span>
         </a>
 
         <!-- Navigation Links -->
-        <div class="flex items-center space-x-3">
+        <div class="flex items-center space-x-4">
           {% if user.is_authenticated %}
-            <a href="{% url 'dashboard' %}" class="text-sm font-medium text-slate-300 hover:text-white px-3 py-2 rounded-lg hover:bg-slate-800 transition">
+            <a href="{% url 'dashboard' %}" class="text-sm font-medium text-gray-700 hover:text-green-600 transition">
               Dashboard
             </a>
             <form method="POST" action="{% url 'logout' %}" class="inline">
               {% csrf_token %}
-              <button type="submit" class="text-sm font-medium text-slate-400 hover:text-rose-400 px-3 py-2 rounded-lg hover:bg-slate-800 transition">
+              <button type="submit" class="text-sm font-medium text-gray-500 hover:text-red-600 transition">
                 Logout
               </button>
             </form>
           {% else %}
-            <a href="{% url 'login' %}" class="text-sm font-medium text-slate-300 hover:text-white px-3.5 py-2 rounded-lg hover:bg-slate-800 transition">
+            <a href="{% url 'login' %}" class="text-sm font-medium text-gray-700 hover:text-green-600 transition">
               Sign In
             </a>
-            <a href="{% url 'register' %}" class="text-sm font-semibold bg-green-500 hover:bg-green-400 text-slate-950 px-4 py-2 rounded-xl transition shadow-md shadow-green-500/20">
+            <a href="{% url 'register' %}" class="text-sm font-semibold bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition shadow-sm">
               Register
             </a>
           {% endif %}
@@ -56,15 +53,15 @@
     </div>
   </nav>
 
-  <!-- Main Body Content -->
-  <main class="flex-grow relative">
+  <!-- Main Content -->
+  <main class="flex-grow">
     {% block content %}{% endblock %}
   </main>
 
   <!-- Footer -->
-  <footer class="bg-slate-900 border-t border-slate-800 py-6 text-center text-xs text-slate-500 relative z-10">
+  <footer class="bg-white border-t border-gray-200 py-6 text-center text-sm text-gray-500">
     <div class="max-w-7xl mx-auto px-4">
-      <p>&copy; {% now "Y" %} Athena Library System. Powered by Django & Three.js</p>
+      <p>&copy; {% now "Y" %} Athena Library System. All rights reserved.</p>
     </div>
   </footer>
 
