@@ -1,34 +1,250 @@
+
 {% extends 'library/base.html' %}
+
 {% block title %}Dashboard | Athena Library{% endblock %}
 
 {% block content %}
-<section class="max-w-7xl mx-auto px-6 py-12">
-  <h2 class="text-3xl font-bold text-green-600 mb-8">Welcome, {{ user.username }}</h2>
 
-  <!-- Quick Stats -->
-  <div class="grid md:grid-cols-3 gap-6 mb-12">
-    <div class="bg-green-50 p-6 rounded-lg shadow">
-      <h3 class="text-xl font-semibold text-green-700">Borrowed Books</h3>
-      <p class="text-2xl font-bold">{{ borrowed_count }}</p>
-    </div>
-    <div class="bg-green-50 p-6 rounded-lg shadow">
-      <h3 class="text-xl font-semibold text-green-700">Due Soon</h3>
-      <p class="text-2xl font-bold">{{ due_soon_count }}</p>
-    </div>
-    <div class="bg-green-50 p-6 rounded-lg shadow">
-      <h3 class="text-xl font-semibold text-green-700">Returned</h3>
-      <p class="text-2xl font-bold">{{ returned_count }}</p>
-    </div>
-  </div>
+<style>
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
-  <!-- Quick Actions -->
-  <div class="grid md:grid-cols-2 gap-6">
-    <a href="{% url 'library' %}" class="bg-green-600 text-white p-6 rounded-lg shadow hover:bg-green-500 transition text-center font-semibold">
-      Browse Library
-    </a>
-    <a href="{% url 'my_books' %}" class="bg-gray-100 text-green-700 p-6 rounded-lg shadow hover:bg-gray-200 transition text-center font-semibold">
-      My Borrowed Books
-    </a>
+  @keyframes glow {
+    0%, 100% { opacity: .35; }
+    50% { opacity: .7; }
+  }
+
+  .fade-up {
+    animation: fadeUp .7s ease both;
+  }
+
+  .stat-card {
+    transition: transform .3s ease, border-color .3s ease, background .3s ease;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(52, 211, 153, .35);
+    background: rgba(30, 41, 59, .85);
+  }
+
+  .action-card {
+    transition: transform .3s ease, border-color .3s ease;
+  }
+
+  .action-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(52, 211, 153, .5);
+  }
+</style>
+
+<section class="relative min-h-screen overflow-hidden bg-[#080d18] text-white">
+
+  <!-- Background atmosphere -->
+  <div class="absolute -top-40 -right-32 w-96 h-96 bg-emerald-500/10 blur-[120px] rounded-full pointer-events-none"></div>
+  <div class="absolute top-[35%] -left-40 w-96 h-96 bg-indigo-500/10 blur-[120px] rounded-full pointer-events-none"></div>
+
+  <div class="relative max-w-7xl mx-auto px-5 sm:px-8 py-12 lg:py-16">
+
+    <!-- Welcome header -->
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12 fade-up">
+
+      <div>
+        <div class="flex items-center gap-2 mb-4">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <p class="text-xs font-bold tracking-[0.25em] uppercase text-emerald-400">
+            Athena Personal Space
+          </p>
+        </div>
+
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
+          Welcome back,
+          <span class="bg-gradient-to-r from-emerald-300 to-teal-400 bg-clip-text text-transparent">
+            {{ user.username }}
+          </span>
+        </h1>
+
+        <p class="text-slate-400 mt-4 max-w-xl leading-relaxed">
+          Your reading journey continues here. Track your books, manage your borrowing activity,
+          and discover something worth reading.
+        </p>
+      </div>
+
+      <a href="{% url 'library' %}"
+         class="inline-flex items-center justify-center gap-3 px-6 py-3.5 rounded-xl bg-emerald-400 text-slate-950 font-bold hover:bg-emerald-300 transition shadow-lg shadow-emerald-500/10">
+        <span>Explore Library</span>
+        <span aria-hidden="true">↗</span>
+      </a>
+
+    </div>
+
+    <!-- Overview label -->
+    <div class="flex items-center justify-between mb-5 fade-up">
+      <div>
+        <h2 class="text-lg font-bold text-white">Your Overview</h2>
+        <p class="text-sm text-slate-500 mt-1">A snapshot of your library activity</p>
+      </div>
+
+      <span class="hidden sm:inline-flex items-center gap-2 text-xs text-slate-500 border border-slate-800 rounded-full px-3 py-2">
+        <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>
+        Account statistics
+      </span>
+    </div>
+
+    <!-- Statistics -->
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-14">
+
+      <!-- Borrowed -->
+      <div class="stat-card fade-up bg-slate-900/70 border border-slate-800 rounded-2xl p-6 relative overflow-hidden">
+        <div class="absolute -right-8 -top-8 w-28 h-28 bg-emerald-400/10 blur-3xl rounded-full"></div>
+
+        <div class="relative flex items-center justify-between mb-7">
+          <div class="w-12 h-12 rounded-xl bg-emerald-400/10 border border-emerald-400/20 flex items-center justify-center text-2xl">
+            📚
+          </div>
+          <span class="text-xs uppercase tracking-widest text-slate-500 font-semibold">Currently active</span>
+        </div>
+
+        <div class="relative">
+          <p class="text-4xl font-bold text-white">{{ borrowed_count|default:0 }}</p>
+          <h3 class="text-sm font-semibold text-slate-300 mt-2">Borrowed Books</h3>
+          <p class="text-xs text-slate-500 mt-1">Books currently in your collection</p>
+        </div>
+      </div>
+
+      <!-- Due Soon -->
+      <div class="stat-card fade-up bg-slate-900/70 border border-slate-800 rounded-2xl p-6 relative overflow-hidden" style="animation-delay: .1s">
+        <div class="absolute -right-8 -top-8 w-28 h-28 bg-amber-400/10 blur-3xl rounded-full"></div>
+
+        <div class="relative flex items-center justify-between mb-7">
+          <div class="w-12 h-12 rounded-xl bg-amber-400/10 border border-amber-400/20 flex items-center justify-center text-2xl">
+            ⏳
+          </div>
+          <span class="text-xs uppercase tracking-widest text-slate-500 font-semibold">Attention</span>
+        </div>
+
+        <div class="relative">
+          <p class="text-4xl font-bold text-white">{{ due_soon_count|default:0 }}</p>
+          <h3 class="text-sm font-semibold text-slate-300 mt-2">Due Soon</h3>
+          <p class="text-xs text-slate-500 mt-1">Books approaching their return date</p>
+        </div>
+      </div>
+
+      <!-- Returned -->
+      <div class="stat-card fade-up bg-slate-900/70 border border-slate-800 rounded-2xl p-6 relative overflow-hidden sm:col-span-2 lg:col-span-1" style="animation-delay: .2s">
+        <div class="absolute -right-8 -top-8 w-28 h-28 bg-indigo-400/10 blur-3xl rounded-full"></div>
+
+        <div class="relative flex items-center justify-between mb-7">
+          <div class="w-12 h-12 rounded-xl bg-indigo-400/10 border border-indigo-400/20 flex items-center justify-center text-2xl">
+            ✓
+          </div>
+          <span class="text-xs uppercase tracking-widest text-slate-500 font-semibold">Completed</span>
+        </div>
+
+        <div class="relative">
+          <p class="text-4xl font-bold text-white">{{ returned_count|default:0 }}</p>
+          <h3 class="text-sm font-semibold text-slate-300 mt-2">Returned Books</h3>
+          <p class="text-xs text-slate-500 mt-1">Books you've successfully returned</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Quick actions -->
+    <div class="mb-6 fade-up">
+      <h2 class="text-lg font-bold text-white">Quick Actions</h2>
+      <p class="text-sm text-slate-500 mt-1">Everything you need, one step away</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-5 mb-14">
+
+      <!-- Browse library -->
+      <a href="{% url 'library' %}"
+         class="action-card group relative overflow-hidden bg-gradient-to-br from-emerald-500/10 to-slate-900 border border-emerald-500/20 rounded-2xl p-7">
+
+        <div class="absolute -right-10 -bottom-16 w-48 h-48 bg-emerald-400/10 blur-3xl rounded-full group-hover:bg-emerald-400/20 transition"></div>
+
+        <div class="relative flex items-start justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-emerald-400/10 border border-emerald-400/20 flex items-center justify-center text-2xl mb-6">
+              🔎
+            </div>
+
+            <h3 class="text-xl font-bold text-white group-hover:text-emerald-300 transition">
+              Discover Books
+            </h3>
+
+            <p class="text-sm text-slate-400 mt-2 max-w-xs leading-relaxed">
+              Explore the Athena collection and find your next great read.
+            </p>
+          </div>
+
+          <span class="text-2xl text-emerald-400 group-hover:translate-x-1 group-hover:-translate-y-1 transition">
+            ↗
+          </span>
+        </div>
+      </a>
+
+      <!-- My books -->
+      <a href="{% url 'my_books' %}"
+         class="action-card group relative overflow-hidden bg-gradient-to-br from-indigo-500/10 to-slate-900 border border-indigo-500/20 rounded-2xl p-7">
+
+        <div class="absolute -right-10 -bottom-16 w-48 h-48 bg-indigo-400/10 blur-3xl rounded-full group-hover:bg-indigo-400/20 transition"></div>
+
+        <div class="relative flex items-start justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-indigo-400/10 border border-indigo-400/20 flex items-center justify-center text-2xl mb-6">
+              📖
+            </div>
+
+            <h3 class="text-xl font-bold text-white group-hover:text-indigo-300 transition">
+              My Borrowed Books
+            </h3>
+
+            <p class="text-sm text-slate-400 mt-2 max-w-xs leading-relaxed">
+              Review your borrowing history and keep track of your books.
+            </p>
+          </div>
+
+          <span class="text-2xl text-indigo-400 group-hover:translate-x-1 group-hover:-translate-y-1 transition">
+            ↗
+          </span>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- Bottom message -->
+    <div class="relative overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/50 p-6 sm:p-8 fade-up">
+
+      <div class="absolute right-0 top-0 w-48 h-48 bg-emerald-400/5 blur-3xl rounded-full"></div>
+
+      <div class="relative flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+        <div>
+          <p class="text-xs font-bold tracking-[0.2em] uppercase text-emerald-400 mb-2">
+            The Athena Philosophy
+          </p>
+          <h3 class="text-xl font-bold text-white">
+            Every book opens a new world.
+          </h3>
+          <p class="text-sm text-slate-400 mt-2">
+            Keep exploring. Keep learning. Keep growing.
+          </p>
+        </div>
+
+        <div class="text-5xl opacity-80">🦉</div>
+      </div>
+
+    </div>
+
+    <footer class="mt-12 pt-6 border-t border-slate-800/70 flex flex-col sm:flex-row justify-between gap-3 text-xs text-slate-600">
+      <p>© {% now "Y" %} Athena Library. All rights reserved.</p>
+      <p>Built for readers. Designed for discovery.</p>
+    </footer>
+
   </div>
 </section>
+
 {% endblock %}
