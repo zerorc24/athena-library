@@ -5,65 +5,73 @@
 
 {% block content %}
 
-<div class="min-h-screen bg-slate-50 py-12">
+<div class="min-h-screen bg-[#f5f9f5] py-14">
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <!-- HEADER -->
-        <div class="mb-12">
-            <div class="flex items-center gap-3 mb-3">
-                <span class="w-10 h-1 bg-emerald-600 rounded-full"></span>
-                <span class="text-sm font-bold uppercase tracking-widest text-emerald-700">
-                    Your personal collection
+        <header class="mb-12">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="h-1 w-10 bg-emerald-600 rounded-full"></span>
+                <span class="text-xs font-bold uppercase tracking-[0.2em] text-emerald-700">
+                    Your personal library
                 </span>
             </div>
 
-            <h1 class="text-4xl md:text-5xl font-extrabold text-green-950">
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-[#123b2b]">
                 My Books
             </h1>
 
-            <p class="text-slate-500 mt-3 max-w-2xl">
-                Keep track of your borrowed books, manage your current reading
-                and revisit your borrowing history.
+            <p class="mt-3 text-gray-500 max-w-xl text-base leading-relaxed">
+                Your reading journey, all in one place. Manage your borrowed
+                books and explore your reading history.
             </p>
-        </div>
+        </header>
 
 
-        <!-- SUMMARY CARDS -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-12">
+        <!-- STATISTICS -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-14">
 
-            <div class="bg-white border border-emerald-100 rounded-2xl p-6 shadow-sm">
-                <div class="flex items-center justify-between">
+            <div class="relative overflow-hidden bg-white border border-emerald-100 rounded-2xl p-7 shadow-sm">
+                <div class="absolute right-0 top-0 w-28 h-28 bg-emerald-50 rounded-full -translate-y-10 translate-x-10"></div>
+
+                <div class="relative flex items-center justify-between">
                     <div>
-                        <p class="text-sm font-medium text-slate-500">
+                        <p class="text-sm font-semibold text-gray-500">
                             Currently Borrowed
                         </p>
-
-                        <h2 class="text-3xl font-extrabold text-green-950 mt-2">
+                        <h2 class="text-4xl font-extrabold text-[#123b2b] mt-3">
                             {{ active_borrowed.count }}
                         </h2>
+                        <p class="text-xs text-emerald-700 font-medium mt-2">
+                            Active loans
+                        </p>
                     </div>
 
-                    <div class="w-14 h-14 rounded-2xl bg-emerald-50 flex items-center justify-center text-2xl">
+                    <div class="w-14 h-14 bg-emerald-100 text-emerald-800 rounded-2xl flex items-center justify-center text-2xl">
                         📚
                     </div>
                 </div>
             </div>
 
 
-            <div class="bg-white border border-emerald-100 rounded-2xl p-6 shadow-sm">
-                <div class="flex items-center justify-between">
+            <div class="relative overflow-hidden bg-white border border-green-100 rounded-2xl p-7 shadow-sm">
+                <div class="absolute right-0 top-0 w-28 h-28 bg-green-50 rounded-full -translate-y-10 translate-x-10"></div>
+
+                <div class="relative flex items-center justify-between">
                     <div>
-                        <p class="text-sm font-medium text-slate-500">
+                        <p class="text-sm font-semibold text-gray-500">
                             Books Returned
                         </p>
-
-                        <h2 class="text-3xl font-extrabold text-green-950 mt-2">
+                        <h2 class="text-4xl font-extrabold text-[#123b2b] mt-3">
                             {{ returned_history.count }}
                         </h2>
+                        <p class="text-xs text-green-700 font-medium mt-2">
+                            Completed loans
+                        </p>
                     </div>
 
-                    <div class="w-14 h-14 rounded-2xl bg-green-50 flex items-center justify-center text-2xl">
+                    <div class="w-14 h-14 bg-green-100 text-green-800 rounded-2xl flex items-center justify-center text-2xl">
                         ✓
                     </div>
                 </div>
@@ -72,22 +80,22 @@
         </div>
 
 
-        <!-- ACTIVE BORROWINGS -->
+        <!-- ACTIVE BOOKS -->
         <section class="mb-16">
 
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-7">
+            <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-7">
 
                 <div>
-                    <h2 class="text-2xl font-bold text-green-950">
+                    <p class="text-xs font-bold uppercase tracking-widest text-emerald-700 mb-2">
+                        Your current collection
+                    </p>
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-[#123b2b]">
                         Currently Borrowed
                     </h2>
-
-                    <p class="text-slate-500 text-sm mt-1">
-                        Books you currently have on loan.
-                    </p>
                 </div>
 
-                <span class="w-fit px-4 py-2 rounded-full bg-emerald-100 text-emerald-800 text-sm font-bold">
+                <span class="inline-flex w-fit items-center gap-2 px-4 py-2 bg-emerald-100 text-emerald-900 rounded-full text-sm font-bold">
+                    <span class="w-2 h-2 bg-emerald-600 rounded-full"></span>
                     {{ active_borrowed.count }} Active
                 </span>
 
@@ -100,56 +108,52 @@
 
                     {% for record in active_borrowed %}
 
-                        <article class="bg-white rounded-2xl border border-emerald-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition duration-300 overflow-hidden">
+                        <article class="group bg-white rounded-2xl border border-emerald-100 shadow-sm hover:shadow-xl hover:border-emerald-300 transition-all duration-300 overflow-hidden">
 
-                            <div class="h-2 bg-gradient-to-r from-green-900 to-emerald-500"></div>
+                            <div class="h-1.5 bg-gradient-to-r from-green-950 via-green-700 to-emerald-500"></div>
 
                             <div class="p-6">
 
-                                <div class="flex items-start justify-between mb-5">
-
+                                <div class="flex items-center justify-between mb-6">
                                     <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center text-2xl">
                                         📖
                                     </div>
 
-                                    <span class="text-xs font-bold uppercase tracking-wide bg-emerald-100 text-emerald-800 px-3 py-1.5 rounded-full">
-                                        Borrowed
+                                    <span class="px-3 py-1.5 bg-green-50 text-green-800 rounded-full text-[11px] font-bold uppercase tracking-wider">
+                                        On loan
                                     </span>
-
                                 </div>
 
 
-                                <h3 class="text-xl font-bold text-green-950 mb-2">
+                                <h3 class="text-xl font-bold text-[#123b2b] leading-snug group-hover:text-emerald-700 transition">
                                     {{ record.book.title }}
                                 </h3>
 
-                                <p class="text-sm text-slate-500">
-                                    By {{ record.book.author.full_name }}
+                                <p class="text-sm text-gray-500 mt-2">
+                                    {{ record.book.author.full_name }}
                                 </p>
 
 
-                                <div class="mt-6 pt-5 border-t border-slate-100">
-
-                                    <p class="text-xs text-slate-400 uppercase tracking-wider font-semibold">
+                                <div class="mt-6 pt-5 border-t border-green-50">
+                                    <p class="text-[11px] uppercase tracking-widest font-bold text-gray-400">
                                         Borrowed on
                                     </p>
 
-                                    <p class="text-sm font-semibold text-slate-700 mt-1">
+                                    <p class="text-sm font-semibold text-gray-700 mt-1">
                                         {{ record.borrowed_at|date:"M d, Y" }}
                                     </p>
-
                                 </div>
 
 
                                 <div class="flex gap-3 mt-6">
 
                                     <a href="{% url 'read_book' record.book.id %}"
-                                       class="flex-1 text-center py-3 rounded-xl border border-emerald-200 text-green-800 font-semibold hover:bg-emerald-50 transition text-sm">
-                                        Read
+                                       class="flex-1 text-center py-3 rounded-xl border border-emerald-200 text-green-900 font-bold text-sm hover:bg-emerald-50 transition">
+                                        Read Book
                                     </a>
 
                                     <a href="{% url 'return_book' record.book.id %}"
-                                       class="flex-1 text-center py-3 rounded-xl bg-green-800 hover:bg-green-900 text-white font-semibold transition text-sm">
+                                       class="flex-1 text-center py-3 rounded-xl bg-green-800 hover:bg-green-950 text-white font-bold text-sm shadow-sm transition">
                                         Return
                                     </a>
 
@@ -165,22 +169,24 @@
 
             {% else %}
 
-                <div class="bg-white border border-emerald-100 rounded-2xl p-12 text-center shadow-sm">
+                <div class="bg-white border border-emerald-100 rounded-3xl p-12 md:p-16 text-center shadow-sm">
 
-                    <div class="text-5xl mb-5">📚</div>
+                    <div class="w-20 h-20 mx-auto rounded-2xl bg-emerald-50 flex items-center justify-center text-4xl mb-6">
+                        📚
+                    </div>
 
-                    <h3 class="text-xl font-bold text-green-950">
-                        Your reading journey starts here
+                    <h3 class="text-2xl font-bold text-[#123b2b]">
+                        Your shelf is waiting
                     </h3>
 
-                    <p class="text-slate-500 mt-3 max-w-md mx-auto">
-                        You haven't borrowed any books yet. Explore the Athena
-                        collection and find something interesting to read.
+                    <p class="text-gray-500 mt-3 max-w-md mx-auto leading-relaxed">
+                        You haven't borrowed any books yet. Discover something
+                        interesting in the Athena collection.
                     </p>
 
                     <a href="{% url 'library' %}"
-                       class="inline-flex items-center gap-2 mt-7 px-7 py-3 rounded-xl bg-green-800 hover:bg-green-900 text-white font-bold transition">
-                        Explore Library
+                       class="inline-flex items-center gap-2 mt-7 px-7 py-3.5 rounded-xl bg-green-800 hover:bg-green-950 text-white font-bold transition shadow-sm">
+                        Explore the Library
                         <span>→</span>
                     </a>
 
@@ -191,22 +197,22 @@
         </section>
 
 
-        <!-- RETURNED BOOKS -->
+        <!-- BORROWING HISTORY -->
         <section>
 
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-7">
+            <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-7">
 
                 <div>
-                    <h2 class="text-2xl font-bold text-green-950">
+                    <p class="text-xs font-bold uppercase tracking-widest text-emerald-700 mb-2">
+                        Your reading journey
+                    </p>
+
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-[#123b2b]">
                         Borrowing History
                     </h2>
-
-                    <p class="text-slate-500 text-sm mt-1">
-                        Books you've successfully returned.
-                    </p>
                 </div>
 
-                <span class="w-fit px-4 py-2 rounded-full bg-green-100 text-green-800 text-sm font-bold">
+                <span class="w-fit px-4 py-2 bg-green-100 text-green-900 rounded-full text-sm font-bold">
                     {{ returned_history.count }} Returned
                 </span>
 
@@ -219,7 +225,7 @@
 
                     {% for record in returned_history %}
 
-                        <div class="p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 border-b border-slate-100 last:border-0">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 p-6 border-b border-green-50 last:border-0 hover:bg-[#f8fcf8] transition">
 
                             <div class="flex items-center gap-4">
 
@@ -228,30 +234,29 @@
                                 </div>
 
                                 <div>
-
-                                    <h3 class="font-bold text-green-950">
+                                    <h3 class="font-bold text-[#123b2b]">
                                         {{ record.book.title }}
                                     </h3>
 
-                                    <p class="text-sm text-slate-500 mt-1">
+                                    <p class="text-sm text-gray-500 mt-1">
                                         {{ record.book.author.full_name }}
                                     </p>
 
-                                    <p class="text-xs text-slate-400 mt-2">
+                                    <p class="text-xs text-gray-400 mt-2">
                                         Borrowed: {{ record.borrowed_at|date:"M d, Y" }}
                                     </p>
 
-                                    <p class="text-xs text-slate-400">
+                                    <p class="text-xs text-gray-400">
                                         Returned: {{ record.return_date|date:"M d, Y" }}
                                     </p>
-
                                 </div>
 
                             </div>
 
 
-                            <span class="w-fit px-4 py-2 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold uppercase tracking-wide">
-                                ✓ Returned
+                            <span class="inline-flex items-center gap-2 w-fit px-4 py-2 rounded-full bg-emerald-50 text-emerald-800 text-xs font-bold uppercase tracking-wide">
+                                <span>✓</span>
+                                Returned
                             </span>
 
                         </div>
@@ -262,12 +267,10 @@
 
             {% else %}
 
-                <div class="bg-white border border-emerald-100 rounded-2xl p-8 text-center shadow-sm">
-
-                    <p class="text-slate-500">
+                <div class="bg-white border border-emerald-100 rounded-2xl p-9 text-center shadow-sm">
+                    <p class="text-gray-500">
                         Your returned books will appear here.
                     </p>
-
                 </div>
 
             {% endif %}
@@ -275,14 +278,12 @@
         </section>
 
 
-        <!-- BACK TO LIBRARY -->
-        <div class="mt-12 text-center">
-
+        <!-- FOOTER ACTION -->
+        <div class="mt-14 pt-8 border-t border-green-100 flex justify-center">
             <a href="{% url 'library' %}"
-               class="inline-flex items-center gap-2 text-green-800 font-semibold hover:text-emerald-600 transition">
-                ← Back to Library
+               class="inline-flex items-center gap-2 text-green-800 font-bold hover:text-emerald-600 transition">
+                ← Back to the Library
             </a>
-
         </div>
 
     </div>
