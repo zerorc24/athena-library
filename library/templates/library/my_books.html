@@ -1,133 +1,292 @@
- 
+
 {% extends 'library/base.html' %}
 
 {% block title %}My Books | Athena Library{% endblock %}
 
 {% block content %}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-    <!-- Page Header -->
-    <div class="mb-10">
-        <p class="text-sm font-semibold text-blue-600 uppercase tracking-wider">
-            Personal Library
-        </p>
-        <h1 class="text-3xl md:text-4xl font-bold text-slate-900 mt-2">
-            My Books
-        </h1>
-        <p class="text-slate-500 mt-2">
-            Manage your borrowed books and explore your borrowing history.
-        </p>
-    </div>
+<div class="min-h-screen bg-slate-50 py-12">
 
-    <!-- Active Borrowings -->
-    <section class="mb-14">
-        <div class="flex items-center justify-between mb-6">
-            <h2 class="text-xl font-bold text-slate-900">
-                Currently Borrowed
-            </h2>
-            <span class="bg-blue-100 text-blue-700 text-sm font-semibold px-3 py-1 rounded-full">
-                {{ active_borrowed.count }} active
-            </span>
-        </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {% if active_borrowed %}
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-
-            {% for record in active_borrowed %}
-            <div class="bg-white border border-blue-100 rounded-2xl p-6 shadow-sm hover:shadow-md transition">
-
-                <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center mb-4">
-                    <span class="text-2xl">📖</span>
-                </div>
-
-                <h3 class="text-lg font-bold text-slate-900">
-                    {{ record.book.title }}
-                </h3>
-
-                <p class="text-sm text-slate-500 mt-1">
-                    By {{ record.book.author.full_name }}
-                </p>
-
-                <div class="mt-5 pt-4 border-t border-slate-100">
-                    <p class="text-sm text-slate-500">
-                        Borrowed on
-                    </p>
-                    <p class="font-medium text-slate-800">
-                        {{ record.borrow_date|date:"M d, Y" }}
-                    </p>
-                </div>
-
-                <a href="{% url 'return_book' record.book.id %}"
-                   class="mt-5 block text-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl transition">
-                    Return Book
-                </a>
-
+        <!-- HEADER -->
+        <div class="mb-12">
+            <div class="flex items-center gap-3 mb-3">
+                <span class="w-10 h-1 bg-emerald-600 rounded-full"></span>
+                <span class="text-sm font-bold uppercase tracking-widest text-emerald-700">
+                    Your personal collection
+                </span>
             </div>
-            {% endfor %}
 
-        </div>
-        {% else %}
-        <div class="bg-blue-50/60 border border-blue-100 rounded-2xl p-10 text-center">
-            <p class="text-4xl mb-3">📚</p>
-            <h3 class="text-lg font-bold text-slate-800">
-                No books borrowed yet
-            </h3>
-            <p class="text-slate-500 mt-2">
-                Explore Athena's collection and borrow your first book.
+            <h1 class="text-4xl md:text-5xl font-extrabold text-green-950">
+                My Books
+            </h1>
+
+            <p class="text-slate-500 mt-3 max-w-2xl">
+                Keep track of your borrowed books, manage your current reading
+                and revisit your borrowing history.
             </p>
-            <a href="{% url 'library' %}"
-               class="inline-block mt-5 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold">
-                Explore Library
-            </a>
-        </div>
-        {% endif %}
-    </section>
-
-    <!-- Returned Books -->
-    <section>
-        <div class="flex items-center justify-between mb-6">
-            <h2 class="text-xl font-bold text-slate-900">
-                Borrowing History
-            </h2>
-            <span class="bg-slate-100 text-slate-600 text-sm font-semibold px-3 py-1 rounded-full">
-                {{ returned_history.count }} returned
-            </span>
         </div>
 
-        {% if returned_history %}
-        <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
 
-            {% for record in returned_history %}
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 border-b border-slate-100 last:border-0">
+        <!-- SUMMARY CARDS -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-12">
+
+            <div class="bg-white border border-emerald-100 rounded-2xl p-6 shadow-sm">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-slate-500">
+                            Currently Borrowed
+                        </p>
+
+                        <h2 class="text-3xl font-extrabold text-green-950 mt-2">
+                            {{ active_borrowed.count }}
+                        </h2>
+                    </div>
+
+                    <div class="w-14 h-14 rounded-2xl bg-emerald-50 flex items-center justify-center text-2xl">
+                        📚
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="bg-white border border-emerald-100 rounded-2xl p-6 shadow-sm">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-slate-500">
+                            Books Returned
+                        </p>
+
+                        <h2 class="text-3xl font-extrabold text-green-950 mt-2">
+                            {{ returned_history.count }}
+                        </h2>
+                    </div>
+
+                    <div class="w-14 h-14 rounded-2xl bg-green-50 flex items-center justify-center text-2xl">
+                        ✓
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- ACTIVE BORROWINGS -->
+        <section class="mb-16">
+
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-7">
 
                 <div>
-                    <h3 class="font-bold text-slate-900">
-                        {{ record.book.title }}
-                    </h3>
-                    <p class="text-sm text-slate-500 mt-1">
-                        {{ record.book.author.full_name }}
-                    </p>
-                    <p class="text-xs text-slate-400 mt-2">
-                        Returned: {{ record.return_date|date:"M d, Y" }}
+                    <h2 class="text-2xl font-bold text-green-950">
+                        Currently Borrowed
+                    </h2>
+
+                    <p class="text-slate-500 text-sm mt-1">
+                        Books you currently have on loan.
                     </p>
                 </div>
 
-                <span class="inline-flex items-center w-fit bg-blue-50 text-blue-700 text-xs font-semibold px-3 py-2 rounded-full">
-                    Returned
+                <span class="w-fit px-4 py-2 rounded-full bg-emerald-100 text-emerald-800 text-sm font-bold">
+                    {{ active_borrowed.count }} Active
                 </span>
 
             </div>
-            {% endfor %}
+
+
+            {% if active_borrowed %}
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                    {% for record in active_borrowed %}
+
+                        <article class="bg-white rounded-2xl border border-emerald-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition duration-300 overflow-hidden">
+
+                            <div class="h-2 bg-gradient-to-r from-green-900 to-emerald-500"></div>
+
+                            <div class="p-6">
+
+                                <div class="flex items-start justify-between mb-5">
+
+                                    <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center text-2xl">
+                                        📖
+                                    </div>
+
+                                    <span class="text-xs font-bold uppercase tracking-wide bg-emerald-100 text-emerald-800 px-3 py-1.5 rounded-full">
+                                        Borrowed
+                                    </span>
+
+                                </div>
+
+
+                                <h3 class="text-xl font-bold text-green-950 mb-2">
+                                    {{ record.book.title }}
+                                </h3>
+
+                                <p class="text-sm text-slate-500">
+                                    By {{ record.book.author.full_name }}
+                                </p>
+
+
+                                <div class="mt-6 pt-5 border-t border-slate-100">
+
+                                    <p class="text-xs text-slate-400 uppercase tracking-wider font-semibold">
+                                        Borrowed on
+                                    </p>
+
+                                    <p class="text-sm font-semibold text-slate-700 mt-1">
+                                        {{ record.borrowed_at|date:"M d, Y" }}
+                                    </p>
+
+                                </div>
+
+
+                                <div class="flex gap-3 mt-6">
+
+                                    <a href="{% url 'read_book' record.book.id %}"
+                                       class="flex-1 text-center py-3 rounded-xl border border-emerald-200 text-green-800 font-semibold hover:bg-emerald-50 transition text-sm">
+                                        Read
+                                    </a>
+
+                                    <a href="{% url 'return_book' record.book.id %}"
+                                       class="flex-1 text-center py-3 rounded-xl bg-green-800 hover:bg-green-900 text-white font-semibold transition text-sm">
+                                        Return
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        </article>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="bg-white border border-emerald-100 rounded-2xl p-12 text-center shadow-sm">
+
+                    <div class="text-5xl mb-5">📚</div>
+
+                    <h3 class="text-xl font-bold text-green-950">
+                        Your reading journey starts here
+                    </h3>
+
+                    <p class="text-slate-500 mt-3 max-w-md mx-auto">
+                        You haven't borrowed any books yet. Explore the Athena
+                        collection and find something interesting to read.
+                    </p>
+
+                    <a href="{% url 'library' %}"
+                       class="inline-flex items-center gap-2 mt-7 px-7 py-3 rounded-xl bg-green-800 hover:bg-green-900 text-white font-bold transition">
+                        Explore Library
+                        <span>→</span>
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+        <!-- RETURNED BOOKS -->
+        <section>
+
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-7">
+
+                <div>
+                    <h2 class="text-2xl font-bold text-green-950">
+                        Borrowing History
+                    </h2>
+
+                    <p class="text-slate-500 text-sm mt-1">
+                        Books you've successfully returned.
+                    </p>
+                </div>
+
+                <span class="w-fit px-4 py-2 rounded-full bg-green-100 text-green-800 text-sm font-bold">
+                    {{ returned_history.count }} Returned
+                </span>
+
+            </div>
+
+
+            {% if returned_history %}
+
+                <div class="bg-white border border-emerald-100 rounded-2xl shadow-sm overflow-hidden">
+
+                    {% for record in returned_history %}
+
+                        <div class="p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 border-b border-slate-100 last:border-0">
+
+                            <div class="flex items-center gap-4">
+
+                                <div class="w-12 h-12 shrink-0 rounded-xl bg-green-50 flex items-center justify-center text-xl">
+                                    📗
+                                </div>
+
+                                <div>
+
+                                    <h3 class="font-bold text-green-950">
+                                        {{ record.book.title }}
+                                    </h3>
+
+                                    <p class="text-sm text-slate-500 mt-1">
+                                        {{ record.book.author.full_name }}
+                                    </p>
+
+                                    <p class="text-xs text-slate-400 mt-2">
+                                        Borrowed: {{ record.borrowed_at|date:"M d, Y" }}
+                                    </p>
+
+                                    <p class="text-xs text-slate-400">
+                                        Returned: {{ record.return_date|date:"M d, Y" }}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <span class="w-fit px-4 py-2 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold uppercase tracking-wide">
+                                ✓ Returned
+                            </span>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="bg-white border border-emerald-100 rounded-2xl p-8 text-center shadow-sm">
+
+                    <p class="text-slate-500">
+                        Your returned books will appear here.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+        <!-- BACK TO LIBRARY -->
+        <div class="mt-12 text-center">
+
+            <a href="{% url 'library' %}"
+               class="inline-flex items-center gap-2 text-green-800 font-semibold hover:text-emerald-600 transition">
+                ← Back to Library
+            </a>
 
         </div>
-        {% else %}
-        <div class="bg-white border border-slate-200 rounded-2xl p-8 text-center">
-            <p class="text-slate-500">
-                Your borrowing history will appear here after you return books.
-            </p>
-        </div>
-        {% endif %}
-    </section>
+
+    </div>
 
 </div>
+
 {% endblock %}
