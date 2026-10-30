@@ -1,77 +1,678 @@
+
 {% extends 'library/base.html' %}
 
-{% block title %}Athena Library | Next-Gen Book Management{% endblock %}
+{% block title %}Athena | The Future of Reading{% endblock %}
 
 {% block content %}
-<section class="relative overflow-hidden py-20 lg:py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-  
-  <!-- Subtle Gradient Glow -->
-  <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-emerald-500/10 blur-[120px] rounded-full pointer-events-none"></div>
 
-  <!-- Hero Container -->
-  <div class="relative z-10 text-center max-w-3xl mx-auto mb-20">
-    <span class="inline-block px-4 py-1.5 mb-6 text-xs font-semibold tracking-wider text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 rounded-full uppercase">
-      Modern Library Catalog
-    </span>
-    
-    <h1 class="text-4xl sm:text-6xl font-extrabold text-white tracking-tight mb-6 leading-tight">
-      Manage your collection with <span class="bg-gradient-to-r from-emerald-400 to-indigo-400 bg-clip-text text-transparent">Athena</span>
-    </h1>
-    
-    <p class="text-lg text-slate-400 mb-8 max-w-2xl mx-auto">
-      An intuitive, streamlined platform for searching, borrowing, and organizing books in real time.
-    </p>
+<style>
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
 
-    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-      {% if user.is_authenticated %}
-        <a href="{% url 'dashboard' %}" class="w-full sm:w-auto px-8 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl transition shadow-lg shadow-emerald-500/20">
-          Go to Dashboard
-        </a>
-      {% else %}
-        <a href="{% url 'register' %}" class="w-full sm:w-auto px-8 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl transition shadow-lg shadow-emerald-500/20">
-          Create Account
-        </a>
-        <a href="{% url 'login' %}" class="w-full sm:w-auto px-8 py-3.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold rounded-xl transition">
-          Sign In
-        </a>
-      {% endif %}
+  @keyframes reveal {
+    from {
+      opacity: 0;
+      transform: translateY(25px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { opacity: .35; }
+    50% { opacity: .7; }
+  }
+
+  @keyframes shine {
+    from { background-position: 200% center; }
+    to { background-position: -200% center; }
+  }
+
+  .athena-reveal {
+    animation: reveal .8s ease-out both;
+  }
+
+  .athena-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .athena-glow {
+    animation: pulse-glow 5s ease-in-out infinite;
+  }
+
+  .athena-gradient-text {
+    background: linear-gradient(
+      100deg,
+      #ffffff 0%,
+      #a7f3d0 30%,
+      #a5b4fc 65%,
+      #ffffff 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shine 8s linear infinite;
+  }
+
+  .athena-card {
+    transition: transform .35s ease, border-color .35s ease,
+                background .35s ease, box-shadow .35s ease;
+  }
+
+  .athena-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(52, 211, 153, .4);
+    background: rgba(30, 41, 59, .8);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, .25);
+  }
+
+  .athena-button {
+    transition: all .3s ease;
+  }
+
+  .athena-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(16, 185, 129, .2);
+  }
+
+  .athena-grid {
+    background-image:
+      linear-gradient(rgba(148,163,184,.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(148,163,184,.045) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: linear-gradient(to bottom, black, transparent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: .01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+      transition-duration: .01ms !important;
+    }
+  }
+</style>
+
+<!-- MAIN PAGE -->
+<div class="relative overflow-hidden bg-[#080d18] text-white">
+
+  <!-- Background -->
+  <div class="absolute inset-0 athena-grid pointer-events-none"></div>
+
+  <div class="absolute -top-40 left-1/2 -translate-x-1/2
+              w-[650px] h-[650px] rounded-full
+              bg-emerald-500/[0.08] blur-[140px]
+              pointer-events-none athena-glow"></div>
+
+  <div class="absolute top-[35%] -right-40
+              w-[450px] h-[450px] rounded-full
+              bg-indigo-500/[0.08] blur-[140px]
+              pointer-events-none"></div>
+
+  <!-- HERO -->
+  <section class="relative max-w-7xl mx-auto px-5 sm:px-8
+                  pt-24 sm:pt-32 pb-24 lg:pt-40 lg:pb-36">
+
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+
+      <!-- Left Content -->
+      <div class="relative z-10 athena-reveal">
+
+        <div class="inline-flex items-center gap-2 px-4 py-2
+                    rounded-full border border-emerald-400/20
+                    bg-emerald-400/[0.07] mb-8">
+
+          <span class="w-2 h-2 rounded-full bg-emerald-400
+                       shadow-[0_0_12px_#34d399]"></span>
+
+          <span class="text-xs font-semibold tracking-[.18em]
+                       uppercase text-emerald-300">
+            The intelligent library experience
+          </span>
+        </div>
+
+        <h1 class="text-5xl sm:text-6xl lg:text-7xl
+                   font-black tracking-tight leading-[1.08] mb-8">
+
+          Knowledge has a
+          <span class="block athena-gradient-text">
+            new home.
+          </span>
+
+        </h1>
+
+        <p class="text-slate-400 text-lg leading-relaxed
+                  max-w-xl mb-10">
+
+          Discover, organize and explore knowledge through
+          a smarter library experience. Everything you need
+          to manage your reading journey, beautifully connected.
+
+        </p>
+
+        <!-- Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4">
+
+          {% if user.is_authenticated %}
+
+            <a href="{% url 'dashboard' %}"
+               class="athena-button inline-flex justify-center
+                      items-center gap-3 px-8 py-4
+                      rounded-xl bg-emerald-400
+                      text-slate-950 font-bold">
+
+              Explore Dashboard
+              <span>→</span>
+            </a>
+
+          {% else %}
+
+            <a href="{% url 'register' %}"
+               class="athena-button inline-flex justify-center
+                      items-center gap-3 px-8 py-4
+                      rounded-xl bg-emerald-400
+                      text-slate-950 font-bold">
+
+              Get Started
+              <span>→</span>
+            </a>
+
+            <a href="{% url 'login' %}"
+               class="athena-button inline-flex justify-center
+                      items-center gap-3 px-8 py-4
+                      rounded-xl border border-slate-700
+                      bg-white/[0.03] text-white font-semibold
+                      hover:bg-white/[0.08]">
+
+              Sign In
+              <span>↗</span>
+            </a>
+
+          {% endif %}
+
+        </div>
+
+        <div class="flex items-center gap-4 mt-10
+                    text-sm text-slate-500">
+
+          <div class="flex -space-x-2">
+            <div class="w-8 h-8 rounded-full bg-emerald-500/20
+                        border border-emerald-400/30
+                        flex items-center justify-center">📚</div>
+
+            <div class="w-8 h-8 rounded-full bg-indigo-500/20
+                        border border-indigo-400/30
+                        flex items-center justify-center">✦</div>
+
+            <div class="w-8 h-8 rounded-full bg-slate-700
+                        border border-slate-600
+                        flex items-center justify-center">A</div>
+          </div>
+
+          <span>Built for curious minds and lifelong learners.</span>
+
+        </div>
+
+      </div>
+
+      <!-- Right Visual -->
+      <div class="relative flex items-center justify-center
+                  min-h-[380px] lg:min-h-[500px] athena-reveal">
+
+        <div class="absolute w-[300px] h-[300px]
+                    sm:w-[430px] sm:h-[430px]
+                    rounded-full border border-emerald-400/10
+                    athena-float"></div>
+
+        <div class="absolute w-[240px] h-[240px]
+                    sm:w-[350px] sm:h-[350px]
+                    rounded-full border border-indigo-400/10"></div>
+
+        <div class="absolute w-[200px] h-[200px]
+                    rounded-full bg-emerald-500/10
+                    blur-[90px]"></div>
+
+        <!-- Athena Emblem -->
+        <div class="relative z-10 w-64 h-64 sm:w-80 sm:h-80
+                    rounded-[3rem] border border-white/10
+                    bg-gradient-to-br from-slate-800
+                    via-slate-900 to-[#080d18]
+                    shadow-[0_30px_100px_rgba(0,0,0,.5)]
+                    flex items-center justify-center athena-float">
+
+          <div class="absolute inset-3 rounded-[2.5rem]
+                      border border-white/[0.05]"></div>
+
+          <svg viewBox="0 0 200 200"
+               class="w-40 h-40 sm:w-52 sm:h-52"
+               fill="none">
+
+            <defs>
+              <linearGradient id="athenaMetal"
+                x1="20" y1="10" x2="180" y2="190">
+                <stop offset="0%" stop-color="#d1fae5"/>
+                <stop offset="45%" stop-color="#34d399"/>
+                <stop offset="100%" stop-color="#818cf8"/>
+              </linearGradient>
+            </defs>
+
+            <!-- Outer emblem -->
+            <path d="M100 12 L177 55 L177 145
+                     L100 188 L23 145 L23 55 Z"
+                  stroke="url(#athenaMetal)"
+                  stroke-width="2.5"/>
+
+            <!-- Inner geometry -->
+            <path d="M100 28 L162 63 L162 137
+                     L100 172 L38 137 L38 63 Z"
+                  stroke="url(#athenaMetal)"
+                  stroke-width="1" opacity=".5"/>
+
+            <!-- Athena-inspired owl -->
+            <path d="M58 75 L76 48 L100 65
+                     L124 48 L142 75
+                     L135 119 L100 150
+                     L65 119 Z"
+                  stroke="url(#athenaMetal)"
+                  stroke-width="4"
+                  stroke-linejoin="round"/>
+
+            <circle cx="78" cy="91" r="9"
+                    stroke="#a7f3d0" stroke-width="3"/>
+
+            <circle cx="122" cy="91" r="9"
+                    stroke="#a7f3d0" stroke-width="3"/>
+
+            <path d="M91 112 L100 124 L109 112"
+                  stroke="#a7f3d0"
+                  stroke-width="3"
+                  stroke-linecap="round"/>
+
+            <path d="M100 65 V48"
+                  stroke="#a7f3d0"
+                  stroke-width="3"/>
+
+          </svg>
+
+          <div class="absolute bottom-7 text-center">
+            <p class="text-xl tracking-[.4em] font-black
+                      text-white">ATHENA</p>
+            <p class="text-[9px] tracking-[.35em]
+                      text-emerald-300 mt-1">
+              KNOWLEDGE • DISCOVERY
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Floating notification -->
+        <div class="absolute top-8 right-0 sm:right-2
+                    p-4 rounded-2xl border border-white/10
+                    bg-slate-900/90 backdrop-blur-xl
+                    shadow-xl athena-float">
+
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl
+                        bg-emerald-400/10
+                        flex items-center justify-center">
+              📖
+            </div>
+            <div>
+              <p class="text-xs text-slate-400">Your next chapter</p>
+              <p class="text-sm font-bold text-white">
+                Starts here.
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Floating label -->
+        <div class="absolute bottom-8 left-0 sm:left-0
+                    px-5 py-4 rounded-2xl
+                    border border-white/10
+                    bg-slate-900/90 backdrop-blur-xl
+                    shadow-xl">
+
+          <p class="text-xs text-slate-400 mb-1">
+            A smarter way to read
+          </p>
+          <p class="text-sm font-bold text-emerald-300">
+            Think. Explore. Grow.
+          </p>
+
+        </div>
+
+      </div>
+
     </div>
+
+  </section>
+
+  <!-- DIVIDER -->
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="h-px bg-gradient-to-r from-transparent
+                via-slate-700 to-transparent"></div>
   </div>
 
-  <!-- Feature Cards Grid -->
-  <div class="grid md:grid-cols-3 gap-6 relative z-10">
-    
-    <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-2xl border border-slate-700/50 hover:border-emerald-500/40 transition group">
-      <div class="w-12 h-12 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
-        📖
-      </div>
-      <h3 class="text-xl font-bold text-white mb-2">Digital Catalog</h3>
-      <p class="text-slate-400 text-sm leading-relaxed">
-        Browse an organized repository of books, genres, and availability statuses effortlessly.
+  <!-- PLATFORM HIGHLIGHTS -->
+  <section class="relative py-20 max-w-7xl mx-auto px-5 sm:px-8">
+
+    <div class="text-center mb-14">
+      <p class="text-emerald-400 text-xs font-bold
+                uppercase tracking-[.25em] mb-4">
+        Designed around knowledge
+      </p>
+
+      <h2 class="text-3xl sm:text-4xl font-bold mb-4">
+        Everything in one place.
+      </h2>
+
+      <p class="text-slate-400 max-w-xl mx-auto">
+        Powerful tools that make managing a modern library
+        simpler, faster and more accessible.
       </p>
     </div>
 
-    <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-2xl border border-slate-700/50 hover:border-emerald-500/40 transition group">
-      <div class="w-12 h-12 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
-        ⏱️
+    <div class="grid md:grid-cols-3 gap-6">
+
+      <!-- Feature 1 -->
+      <div class="athena-card p-8 rounded-3xl
+                  border border-slate-700/60
+                  bg-slate-800/30">
+
+        <div class="w-14 h-14 rounded-2xl
+                    bg-emerald-400/10
+                    border border-emerald-400/20
+                    flex items-center justify-center
+                    text-2xl mb-7">
+          ◈
+        </div>
+
+        <h3 class="text-xl font-bold mb-3">
+          Intelligent Catalog
+        </h3>
+
+        <p class="text-slate-400 text-sm leading-7">
+          Explore an organized collection of books,
+          authors, publishers and categories with
+          powerful discovery tools.
+        </p>
+
+        <div class="mt-7 text-emerald-400 text-sm font-semibold">
+          Discover knowledge →
+        </div>
+
       </div>
-      <h3 class="text-xl font-bold text-white mb-2">Loan Tracking</h3>
-      <p class="text-slate-400 text-sm leading-relaxed">
-        Monitor borrowed titles, track return dates, and avoid overdue notices seamlessly.
-      </p>
+
+      <!-- Feature 2 -->
+      <div class="athena-card p-8 rounded-3xl
+                  border border-slate-700/60
+                  bg-slate-800/30">
+
+        <div class="w-14 h-14 rounded-2xl
+                    bg-indigo-400/10
+                    border border-indigo-400/20
+                    flex items-center justify-center
+                    text-2xl mb-7">
+          ↗
+        </div>
+
+        <h3 class="text-xl font-bold mb-3">
+          Smart Loan Tracking
+        </h3>
+
+        <p class="text-slate-400 text-sm leading-7">
+          Keep track of borrowed books, due dates
+          and returns through a streamlined
+          borrowing management experience.
+        </p>
+
+        <div class="mt-7 text-indigo-300 text-sm font-semibold">
+          Stay organized →
+        </div>
+
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="athena-card p-8 rounded-3xl
+                  border border-slate-700/60
+                  bg-slate-800/30">
+
+        <div class="w-14 h-14 rounded-2xl
+                    bg-violet-400/10
+                    border border-violet-400/20
+                    flex items-center justify-center
+                    text-2xl mb-7">
+          ✧
+        </div>
+
+        <h3 class="text-xl font-bold mb-3">
+          Seamless Management
+        </h3>
+
+        <p class="text-slate-400 text-sm leading-7">
+          Manage your library experience through
+          intuitive navigation and a clean,
+          responsive interface.
+        </p>
+
+        <div class="mt-7 text-violet-300 text-sm font-semibold">
+          Experience simplicity →
+        </div>
+
+      </div>
+
     </div>
 
-    <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-2xl border border-slate-700/50 hover:border-emerald-500/40 transition group">
-      <div class="w-12 h-12 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
-        ⚡
+  </section>
+
+  <!-- WORKFLOW SECTION -->
+  <section class="relative py-24 border-y
+                  border-slate-800/70
+                  bg-white/[0.015]">
+
+    <div class="max-w-7xl mx-auto px-5 sm:px-8">
+
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+
+        <div>
+          <p class="text-emerald-400 text-xs font-bold
+                    uppercase tracking-[.25em] mb-5">
+            Your journey starts here
+          </p>
+
+          <h2 class="text-3xl sm:text-5xl
+                     font-black leading-tight mb-7">
+            From discovery to
+            <span class="text-emerald-400">
+              knowledge.
+            </span>
+          </h2>
+
+          <p class="text-slate-400 leading-8 max-w-lg">
+            Athena brings your library experience
+            together in one seamless journey.
+            Spend less time managing and more
+            time discovering.
+          </p>
+
+        </div>
+
+        <div class="space-y-5">
+
+          <div class="flex gap-5 items-start
+                      p-6 rounded-2xl
+                      bg-slate-800/40
+                      border border-slate-700/50">
+
+            <span class="text-emerald-400
+                         text-2xl font-black">01</span>
+
+            <div>
+              <h3 class="font-bold text-lg mb-2">
+                Discover
+              </h3>
+              <p class="text-sm text-slate-400 leading-6">
+                Search through the library and find
+                books that interest you.
+              </p>
+            </div>
+
+          </div>
+
+          <div class="flex gap-5 items-start
+                      p-6 rounded-2xl
+                      bg-slate-800/40
+                      border border-slate-700/50">
+
+            <span class="text-emerald-400
+                         text-2xl font-black">02</span>
+
+            <div>
+              <h3 class="font-bold text-lg mb-2">
+                Borrow
+              </h3>
+              <p class="text-sm text-slate-400 leading-6">
+                Access available books and keep
+                your borrowing activity organized.
+              </p>
+            </div>
+
+          </div>
+
+          <div class="flex gap-5 items-start
+                      p-6 rounded-2xl
+                      bg-slate-800/40
+                      border border-slate-700/50">
+
+            <span class="text-emerald-400
+                         text-2xl font-black">03</span>
+
+            <div>
+              <h3 class="font-bold text-lg mb-2">
+                Grow
+              </h3>
+              <p class="text-sm text-slate-400 leading-6">
+                Build your reading journey,
+                one book at a time.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
       </div>
-      <h3 class="text-xl font-bold text-white mb-2">Instant Management</h3>
-      <p class="text-slate-400 text-sm leading-relaxed">
-        Quick account actions, clean navigation, and lightweight performance on all devices.
-      </p>
+
     </div>
 
-  </div>
+  </section>
 
-</section>
+  <!-- FINAL CTA -->
+  <section class="relative py-28 px-5 sm:px-8
+                  max-w-7xl mx-auto">
+
+    <div class="relative overflow-hidden
+                rounded-[2rem] border border-emerald-400/20
+                bg-gradient-to-br from-emerald-500/[0.12]
+                via-slate-900 to-indigo-500/[0.10]
+                p-10 sm:p-16 text-center">
+
+      <div class="absolute w-80 h-80
+                  bg-emerald-400/10 blur-[100px]
+                  rounded-full -top-40 left-1/2
+                  -translate-x-1/2"></div>
+
+      <div class="relative z-10">
+
+        <div class="text-4xl mb-7">✦</div>
+
+        <h2 class="text-3xl sm:text-5xl
+                   font-black mb-6">
+          Your next discovery
+          <span class="athena-gradient-text">
+            awaits.
+          </span>
+        </h2>
+
+        <p class="text-slate-400 max-w-xl
+                  mx-auto leading-7 mb-9">
+          Step into a smarter library experience.
+          Discover new books, organize your reading
+          and make every page count.
+        </p>
+
+        {% if user.is_authenticated %}
+
+          <a href="{% url 'dashboard' %}"
+             class="athena-button inline-flex items-center
+                    gap-3 px-9 py-4 rounded-xl
+                    bg-emerald-400 text-slate-950
+                    font-bold">
+            Enter Athena →
+          </a>
+
+        {% else %}
+
+          <a href="{% url 'register' %}"
+             class="athena-button inline-flex items-center
+                    gap-3 px-9 py-4 rounded-xl
+                    bg-emerald-400 text-slate-950
+                    font-bold">
+            Join Athena →
+          </a>
+
+        {% endif %}
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-800/70
+                 py-9 px-5">
+
+    <div class="max-w-7xl mx-auto
+                flex flex-col sm:flex-row
+                justify-between items-center gap-5">
+
+      <div class="flex items-center gap-3">
+
+        <div class="w-9 h-9 rounded-xl
+                    bg-emerald-400/10
+                    border border-emerald-400/20
+                    flex items-center justify-center
+                    text-emerald-400 font-bold">
+          A
+        </div>
+
+        <span class="font-black tracking-[.2em]">
+          ATHENA
+        </span>
+
+      </div>
+
+      <p class="text-xs text-slate-500 text-center">
+        © {% now "Y" %} Athena Library.
+        Built for knowledge and discovery.
+      </p>
+
+      <p class="text-xs text-slate-500">
+        Think. Explore. Grow.
+      </p>
+
+    </div>
+
+  </footer>
+
+</div>
+
 {% endblock %}
